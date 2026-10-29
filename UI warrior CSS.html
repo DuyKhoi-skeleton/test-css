@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Warrior Studio</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container">
+
+    <div class="twocol">
+
+        <div class="column">
+            <div class="max">max emilian verstappen</div>
+            <div class="namecard">name in game:???<br>id:98176815/99911613</div>
+        </div>
+
+        <div class="column">
+            <div class="kimi">kimi antonelli</div>
+            <div class="card">card</div>
+        </div>
+
+    </div>
+
+    <div class="lecler">chales lecler</div>
+    <div class="circle">O</div>
+    <div class="info">warrior studio<br>version: 4.45.0<br>status: online</div>
+    <div class="box">this is a normal box</div>
+    <div class="glass-box">
+
+    <h2>Warrior System</h2>
+    <p>System Online</p>
+</div>
+    <div class="air-box">...</div>
+    <div class="ideabox">
+    <div class="ideatitle">💡 WARRIOR IDEA BOX</div>
+    <div class="ideadesc">Drop your chaotic ideas here...</div>
+    <input type="text" class="ideainput" placeholder="Type an idea, e.g., V12 Hyper-Mech...">
+    <button class="ideabtn">Push to Main</button>
+<div id="random-notice">suka blyat</div>
+
+<script>
+const notice = document.getElementById("random-notice");
+
+function showNotice() {
+    // Vị trí ngẫu nhiên
+    const x = Math.random() * 80 + 10;
+    const y = Math.random() * 80 + 10;
+
+    notice.style.left = x + "%";
+    notice.style.top = y + "%";
+    notice.style.right = "auto";
+
+    notice.classList.add("show");
+
+    setTimeout(() => {
+        notice.classList.remove("show");
+    }, 2500);
+
+    const nextTime = Math.random() * 30000 + 15000;
+    setTimeout(showNotice, nextTime);
+}
+</script>
+</div>
+</div>
+<div id="ad-container"></div>
+
+<script>
+const adContainer = document.getElementById("ad-container");
+const trash = document.getElementById("trash");
+
+const ads = [
+    {
+        title: "🔥 FREE V12!",
+        text: "Claim your totally real V12 engine NOW!",
+        bg: "linear-gradient(135deg, #ff416c, #ff4b2b)"
+    },
+    {
+        title: "⚡ SYSTEM BOOST!",
+        text: "Your Warrior Studio is 69420% faster!",
+        bg: "linear-gradient(135deg, #00c6ff, #0072ff)"
+    },
+    {
+        title: "💰 YOU WON!",
+        text: "Congratulations! You won absolutely nothing.",
+        bg: "linear-gradient(135deg, #f7971e, #ffd200)"
+    },
+    {
+        title: "🤖 AI OFFER",
+        text: "Buy one AI. Get another AI.",
+        bg: "linear-gradient(135deg, #7f00ff, #e100ff)"
+    },
+    {
+        title: "💀 WARNING",
+        text: "You have been selected for absolutely no reason.",
+        bg: "linear-gradient(135deg, #141e30, #ff0000)"
+    },
+    {
+        title: "🏎️ F1 TURBO",
+        text: "Gain +9000 horsepower instantly!",
+        bg: "linear-gradient(135deg, #ff0000, #111111)"
+    }
+];
+
+function spawnAd() {
+    const data = ads[Math.floor(Math.random() * ads.length)];
+
+    const ad = document.createElement("div");
+    ad.className = "fake-ad";
+
+    ad.style.background = data.bg;
+
+    // Random vị trí
+    ad.style.left = Math.random() * 75 + 5 + "%";
+    ad.style.top = Math.random() * 70 + 5 + "%";
+
+    ad.innerHTML = `
+        <button class="ad-close">×</button>
+        <div class="ad-title">${data.title}</div>
+        <div class="ad-text">${data.text}</div>
+    `;
+
+    adContainer.appendChild(ad);
+
+    // X để đóng
+    ad.querySelector(".ad-close").onclick = () => {
+        ad.remove();
+    };
+
+    // Cho phép kéo
+    let dragging = false;
+
+    ad.addEventListener("mousedown", (e) => {
+        if (e.target.classList.contains("ad-close")) return;
+
+        dragging = true;
+
+        const rect = ad.getBoundingClientRect();
+
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
+        function move(e) {
+            if (!dragging) return;
+
+            ad.style.left = e.clientX - offsetX + "px";
+            ad.style.top = e.clientY - offsetY + "px";
+        }
+
+        function stop() {
+            dragging = false;
+
+            const adRect = ad.getBoundingClientRect();
+            const trashRect = trash.getBoundingClientRect();
+
+            // Kiểm tra popup có nằm trong thùng rác không
+            const inside =
+                adRect.left < trashRect.right &&
+                adRect.right > trashRect.left &&
+                adRect.top < trashRect.bottom &&
+                adRect.bottom > trashRect.top;
+
+            if (inside) {
+                ad.remove();
+                trash.classList.remove("dragover");
+            }
+
+            document.removeEventListener("mousemove", move);
+            document.removeEventListener("mouseup", stop);
+        }
+
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", stop);
+    });
+}
+
+// Spawn đầu tiên
+setTimeout(spawnAd, 3000);
+
+// Càng lâu càng nhiều
+function adLoop() {
+    spawnAd();
+
+    // Random 15–60 giây
+    const nextDelay = Math.random() * 45000 + 15000;
+
+    setTimeout(adLoop, nextDelay);
+}
+
+setTimeout(adLoop, 15000);
+</script>
+</body>
+</html>
